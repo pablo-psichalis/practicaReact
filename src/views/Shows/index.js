@@ -1,5 +1,11 @@
 import React from 'react';
-import showsActions from '../../actions/showsActions'
+import * as showsActions from '../../actions/showsActions'
+
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import Show from '../../components/Show'
 
 class Shows extends React.Component {
 
@@ -10,17 +16,23 @@ class Shows extends React.Component {
             shows: [],
             page: 1,
             loadingShows: false,
-            nowViewing: 'popular'
+            nowViewing: 'popular',
+            viewingThisYearOnly: false,
         }
     }
 
     componentDidMount() {
-        const { nowViewing, page } = this.state;
+        const { shows, nowViewing, page } = this.state;
         const { showsActions } = this.props;
 
         showsActions.loadShows();
 
         window.addEventListener("scroll", this.infiniteScroller, false);
+    }
+
+    componentWillUnmount() {
+        // you need to unbind the same listener that was binded.
+        window.removeEventListener('scroll', this.infiniteScroller, false);
     }
 
     infiniteScroller = e => {
@@ -52,12 +64,23 @@ class Shows extends React.Component {
         }
     }
 
+    fiterShows = shows => {
+        return shows.filter(show => {
+            console.log(show.first_air_date, show.first_air_date.includes('2018'))
+            return show.first_air_date.includes('2018')
+        })
+    }
+
     prepareShows = shows => {
-        return this.state.shows;
+        const { viewingThisYearOnly } = this.state
+        let filteredShows = viewingThisYearOnly ? this.filteredShows(shows) : shows
+        console.log(filteredShows.length)
+        return filteredShows
     }
 
 
     render() {
+        const { shows, nowViewing } = this.state
         return (
             <section className="container main shows">
                 <header className="row">
@@ -66,11 +89,11 @@ class Shows extends React.Component {
                     </div>
                 </header>
                 <div className="row show-list-wrapper">
-                    {this.prepareShows(shows).map((show, i) => {
+                    {shows.map((show, i) => {
                         return (
-                            <Movie
+                            <Show
                                 key={i}
-                                {...movie}
+                                {...show}
                             />
                         )
                     })}
@@ -79,3 +102,18 @@ class Shows extends React.Component {
         )
     }
 }
+
+
+function mapStateToProps(state, ownProps) {
+    return {
+        shows: state.shows
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        showsActions: bindActionCreators(showsActions, dispatch),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Shows)

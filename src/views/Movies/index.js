@@ -108,7 +108,6 @@ class Movies extends React.Component {
 
     render() {
         const { movies, nowViewing, sortBy, viewingThisYearOnly } = this.state
-
         return (
             <section className="container main movies">
                 <header className="row">
