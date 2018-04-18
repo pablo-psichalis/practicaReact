@@ -25,7 +25,7 @@ class Shows extends React.Component {
         const { shows, nowViewing, page } = this.state;
         const { showsActions } = this.props;
 
-        showsActions.loadShows();
+        showsActions.loadShows(page, nowViewing);
 
         window.addEventListener("scroll", this.infiniteScroller, false);
     }

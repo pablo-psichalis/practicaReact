@@ -14,7 +14,7 @@ export function loadShows(page = 1, endpoint = 'popular') {
         fetch(showsURL[endpoint](page))
             .then(response => response.json())
             .then(json => json.results)
-            .then(shows => dispatch(loadShowsSuccess()))
+            .then(shows => dispatch(loadShowsSuccess(shows, page)))
             .catch(error => {
                 dispatch(loadShowsFailure())
                 alert('We could not load the page at this time')

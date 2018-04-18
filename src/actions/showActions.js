@@ -13,16 +13,10 @@ export function loadShow(id){
     return dispatch => {
         fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.REACT_APP_TMDB_API_KEY}`)
         .then(response => response.json())
-        .then(movie => dispatch(loadMovieSuccess(movie)))
+        .then(movie => dispatch(loadShowSuccess(movie)))
         .catch(error => {
-            dispatch(loadMovieFailure())
+            dispatch(loadShowFailure())
             alert('We could not load the page at this time.')
         })
     }
 }
-
-
-
-
-
-
