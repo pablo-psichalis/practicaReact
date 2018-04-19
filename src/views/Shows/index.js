@@ -90,6 +90,7 @@ class Shows extends React.Component {
                 </header>
                 <div className="row show-list-wrapper">
                     {shows.map((show, i) => {
+                        console.log(show)
                         return (
                             <Show
                                 key={i}
