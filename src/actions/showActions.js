@@ -1,5 +1,4 @@
 import * as types from '../types/show'
-import { showsURL } from '../utils'
 
 export function loadShowSuccess(show){
     return { type: types.LOAD_SHOW_SUCCESS, show }

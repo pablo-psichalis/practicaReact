@@ -1,9 +1,9 @@
 import React from 'react';
 import * as showsActions from '../../actions/showsActions'
 
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import _ from 'lodash'
 
 import Show from '../../components/Show'
 
@@ -17,12 +17,13 @@ class Shows extends React.Component {
             page: 1,
             loadingShows: false,
             nowViewing: 'popular',
+            sortBy: 'name-asc',
             viewingThisYearOnly: false,
         }
     }
 
     componentDidMount() {
-        const { shows, nowViewing, page } = this.state;
+        const { nowViewing, page } = this.state;
         const { showsActions } = this.props;
 
         showsActions.loadShows(page, nowViewing);
@@ -64,23 +65,47 @@ class Shows extends React.Component {
         }
     }
 
-    fiterShows = shows => {
+    onViewingChange = e => {
+        const nowViewing = e.target.value;
+        const { showsActions } = this.props;
+        showsActions.loadShows(1, nowViewing);
+        this.setState({
+            page: 2,
+            loadingShows: true,
+            nowViewing,
+        })
+    }
+
+    onSortChange = e => {
+        this.setState({ sortBy: e.target.value })
+    }
+    sortShows = shows => {
+        const { sortBy } = this.state
+        const sorting = sortBy.split('-')
+
+        return _.orderBy(shows, sorting[0], sorting[1])
+    }
+
+    onToggleViewingThisYearOnly = e => {
+        this.setState({ viewingThisYearOnly: !this.state.viewingThisYearOnly })
+    }
+
+    filterShows = shows => {
         return shows.filter(show => {
-            console.log(show.first_air_date, show.first_air_date.includes('2018'))
-            return show.first_air_date.includes('2018')
+            console.log(show.first_air_date, show.first_air_date.includes('2017'))
+            return show.first_air_date.includes('2017')
         })
     }
 
     prepareShows = shows => {
         const { viewingThisYearOnly } = this.state
-        let filteredShows = viewingThisYearOnly ? this.filteredShows(shows) : shows
+        let filteredShows = viewingThisYearOnly ? this.filterShows(shows) : shows
         console.log(filteredShows.length)
-        return filteredShows
+        return this.sortShows(filteredShows)
     }
 
-
     render() {
-        const { shows, nowViewing } = this.state
+        const { shows, nowViewing, sortBy, viewingThisYearOnly } = this.state
         return (
             <section className="container main shows">
                 <header className="row">
@@ -88,9 +113,37 @@ class Shows extends React.Component {
                         <h1>{shows.length > 0 ? 'TV Shows' : 'Loading...'}</h1>
                     </div>
                 </header>
+                <aside className="row">
+                    <div className="form-group">
+                        <label>Now viewing:</label>
+                        <select className="form-control" onChange={this.onViewingChange} defaultValue={nowViewing}>
+                            <option value="latest">Latest</option>
+                            <option value="topRated">Top Rated</option>
+                            <option value="popular">Popular</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label>Sort by:</label>
+                        <select className="form-control" onChange={this.onSortChange} defaultValue={sortBy}>
+                            <option value="name-asc">Title (Asc)</option>
+                            <option value="name-desc">Title (Desc)</option>
+                            <option value="popularity-asc">Less Popular</option>
+                            <option value="popularity-desc">More Popular</option>
+                            <option value="vote_average-asc">Worst</option>
+                            <option value="vote_average-desc">Best</option>
+                            <option value="release_date-asc">Oldest</option>
+                            <option value="release_date-desc">Newest</option>
+                        </select>
+                    </div>
+                    <div className="form-check">
+                        <label className="form-check-label">
+                            <input className="form-check-input" onChange={this.onToggleViewingThisYearOnly} type="checkbox" checked={viewingThisYearOnly} />
+                            View this year only
+                        </label>
+                    </div>
+                </aside>
                 <div className="row show-list-wrapper">
-                    {shows.map((show, i) => {
-                        console.log(show)
+                    {this.prepareShows(shows).map((show, i) => {
                         return (
                             <Show
                                 key={i}
@@ -103,7 +156,6 @@ class Shows extends React.Component {
         )
     }
 }
-
 
 function mapStateToProps(state, ownProps) {
     return {

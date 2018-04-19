@@ -18,7 +18,6 @@ class Home extends React.Component {
     }
 
     componentDidMount(){
-        const { movies } = this.state
         const { moviesActions } = this.props
 
         moviesActions.loadMovies()

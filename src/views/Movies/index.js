@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
@@ -73,7 +72,7 @@ class Movies extends React.Component {
         this.setState({
             page: 2,
             loadingMovies: true,
-            nowViewing
+            nowViewing,
         })
     }
 
