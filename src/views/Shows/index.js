@@ -117,9 +117,9 @@ class Shows extends React.Component {
                     <div className="form-group">
                         <label>Now viewing:</label>
                         <select className="form-control" onChange={this.onViewingChange} defaultValue={nowViewing}>
-                            <option value="latest">Latest</option>
-                            <option value="topRated">Top Rated</option>
                             <option value="popular">Popular</option>
+                            <option value="topRated">Top Rated</option>
+                            <option value="airing_today">Airing today</option>
                         </select>
                     </div>
                     <div className="form-group">

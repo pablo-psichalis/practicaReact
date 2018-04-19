@@ -12,8 +12,10 @@ export function loadShowsFailure() {
 export function loadShows(page = 1, endpoint = 'popular') {
     return dispatch => {
         fetch(showsURL[endpoint](page))
-            .then(response => response.json())
-            .then(json => json.results)
+            .then(response => {
+                console.log('URL:', showsURL[endpoint])
+                return response.json()})
+            .then(json => {let a = json.results; console.log(a); return a})
             .then(shows => dispatch(loadShowsSuccess(shows, page)))
             .catch(error => {
                 dispatch(loadShowsFailure())

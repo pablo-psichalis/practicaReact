@@ -11,8 +11,8 @@ export const moviesURL = {
 }
 
 export const showsURL = {
-    latest: page => {
-        return `https://api.themoviedb.org/3/tv/latest?api_key=${process.env.REACT_APP_TMDB_API_KEY}&page=${page}` 
+    airing_today: page => {
+        return `https://api.themoviedb.org/3/tv/airing_today?api_key=${process.env.REACT_APP_TMDB_API_KEY}&page=${page}` 
     },
     topRated: page => {
         return `https://api.themoviedb.org/3/tv/top_rated?api_key=${process.env.REACT_APP_TMDB_API_KEY}&page=${page}`
