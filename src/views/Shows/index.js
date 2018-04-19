@@ -104,6 +104,14 @@ class Shows extends React.Component {
         return this.sortShows(filteredShows)
     }
 
+    removeShow = id => {
+        const { shows } = this.state
+        showsActions.hideShowAction(shows, id)
+        this.setState({
+            loadingShows: true
+        })
+    }
+
     render() {
         const { shows, nowViewing, sortBy, viewingThisYearOnly } = this.state
         return (
@@ -131,8 +139,8 @@ class Shows extends React.Component {
                             <option value="popularity-desc">More Popular</option>
                             <option value="vote_average-asc">Worst</option>
                             <option value="vote_average-desc">Best</option>
-                            <option value="release_date-asc">Oldest</option>
-                            <option value="release_date-desc">Newest</option>
+                            <option value="first_air_date-asc">Oldest</option>
+                            <option value="first_air_date-desc">Newest</option>
                         </select>
                     </div>
                     <div className="form-check">
@@ -146,8 +154,17 @@ class Shows extends React.Component {
                     {this.prepareShows(shows).map((show, i) => {
                         return (
                             <Show
+                                hideShows={this.removeShow.bind(this)}
                                 key={i}
-                                {...show}
+                                show={
+                                    {
+                                        indice: i,
+                                        poster_path: show.poster_path,
+                                        id: show.id,
+                                        name: show.name,
+                                        overview: show.overview
+                                    }
+                                }
                             />
                         )
                     })}

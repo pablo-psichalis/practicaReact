@@ -9,17 +9,23 @@ export function loadShowsFailure() {
     return { type: types.LOAD_SHOWS_FAILURE }
 }
 
+export function hideShowSuccess(shows, show_id) {
+    return { type: types.HIDE_SHOW_SUCESS, shows, show_id }
+}
+
 export function loadShows(page = 1, endpoint = 'popular') {
     return dispatch => {
         fetch(showsURL[endpoint](page))
-            .then(response => {
-                console.log('URL:', showsURL[endpoint])
-                return response.json()})
-            .then(json => {let a = json.results; console.log(a); return a})
+            .then(response => response.json())
+            .then(json => json.results)
             .then(shows => dispatch(loadShowsSuccess(shows, page)))
             .catch(error => {
                 dispatch(loadShowsFailure())
                 alert('We could not load the page at this time')
             })
     }
+}
+
+export function hideShowAction(shows, show_id) {
+    return hideShowSuccess(shows.splice(show_id, 1));
 }

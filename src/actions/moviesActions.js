@@ -21,9 +21,3 @@ export function loadMovies(page = 1, endpoint = 'popular'){
         })
     }
 }
-
-
-
-
-
-

@@ -19,9 +19,3 @@ export function loadMovie(id){
         })
     }
 }
-
-
-
-
-
-

@@ -4,7 +4,6 @@ import initialState from './initialState'
 export default function showsReducer(state = initialState.shows, action) {
     switch (action.type) {
         case types.LOAD_SHOWS_SUCCESS:
-            console.log(action.page)
             if (action.page === 1) {
                 return action.shows
             }
@@ -14,6 +13,8 @@ export default function showsReducer(state = initialState.shows, action) {
                     ...action.shows,
                 ]
             }
+        case types.HIDE_SHOW_SUCESS:
+            return action.shows
         default:
             return state
     }
