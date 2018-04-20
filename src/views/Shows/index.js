@@ -106,6 +106,7 @@ class Shows extends React.Component {
 
     removeShow = id => {
         const { shows } = this.state
+        console.log("hideShow", id);
         showsActions.hideShowAction(shows, id)
         this.setState({
             loadingShows: true
@@ -158,7 +159,6 @@ class Shows extends React.Component {
                                 key={i}
                                 show={
                                     {
-                                        indice: i,
                                         poster_path: show.poster_path,
                                         id: show.id,
                                         name: show.name,

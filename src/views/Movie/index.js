@@ -9,18 +9,24 @@ class Movie extends React.Component {
         super(props) 
 
         this.state = {
-            movie: {}
+            movie: {},
+            recommendations: [],
+            similar: [],
         }
     }
 
     componentDidMount(){
-        const { movieActions, match } = this.props
+        const { movieActions, match } = this.props;
 
-        movieActions.loadMovie(match.params.id)
+        movieActions.loadMovie(match.params.id);
+        movieActions.loadRecommendations(match.params.id);
     }
 
-    componentWillReceiveProps({movie}) {
-        this.setState({movie})
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            movie: nextProps.movie,
+            recommendations: nextProps.recommendations,
+        })
     }
 
     render() {
@@ -45,6 +51,12 @@ class Movie extends React.Component {
                         <p className="d-block">{movie.overview}</p>
                     </div>
                 </article>
+                <article className="row similar-item">
+                    <div className="similares">
+                        Pelis similares:
+                    </div>
+                </article>
+
             </section>
         )
     }
@@ -52,7 +64,8 @@ class Movie extends React.Component {
 
 function mapStateToProps(state, ownProps){
     return {
-        movie: state.movie
+        movie: state.movie,
+        recommendations: state.recommendations,
     }
 }
 

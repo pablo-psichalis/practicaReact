@@ -1,6 +1,8 @@
 import * as types from '../types/shows'
 import { showsURL } from '../utils'
 
+import _ from 'lodash';
+
 export function loadShowsSuccess(shows, page) {
     return { type: types.LOAD_SHOWS_SUCCESS, shows, page }
 }
@@ -27,5 +29,12 @@ export function loadShows(page = 1, endpoint = 'popular') {
 }
 
 export function hideShowAction(shows, show_id) {
-    return hideShowSuccess(shows.splice(show_id, 1));
+    let encontrado = false;
+    for (let i = 0; i < shows.length && !encontrado; i++) {
+        if (shows[i].id == show_id) {
+            shows.splice(i, 1);
+            encontrado = true;
+        }
+    }
+    return hideShowSuccess(shows);
 }

@@ -14,7 +14,7 @@ const Show = props => {
                 <header className="w-100 pt-3 px-3">
                     <Link className="d-block" to={`/shows/${props.show.id}`}>{props.show.name}</Link>
                 </header>
-                <button onClick={() => props.hideShows(props.show.indice)}>Hide</button>
+                <button class="btn btn-danger" onClick={() => props.hideShows(props.show.id)}>Hide</button>
                 <p>{props.show.overview}</p>
             </div>
         </article>
