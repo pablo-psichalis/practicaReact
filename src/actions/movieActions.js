@@ -32,10 +32,20 @@ export function loadRecommendations(id) {
     return dispatch => {
         fetch(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${process.env.REACT_APP_TMDB_API_KEY}`)
             .then(response => response.json())
+            .then(json => json.results)
             .then(recommendations => dispatch(loadRecommendationsSuccess(recommendations)))
             .catch(error => {
                 dispatch(loadRecommendationFailure())
                 alert('We could not load the page at this time.')
             })
+    }
+}
+
+export function loadRandomMovie() {
+    return dispatch => {
+        fetch(`https://api.themoviedb.org/3/movie/latest?api_key=${process.env.REACT_APP_TMDB_API_KEY}`)
+            .then(response => response.json())
+            .then(movie => Math.floor(Math.random() * movie.id + 30))
+            .then(id => dispatch(loadMovie(id)))
     }
 }

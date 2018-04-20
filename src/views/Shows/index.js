@@ -106,7 +106,6 @@ class Shows extends React.Component {
 
     removeShow = id => {
         const { shows } = this.state
-        console.log("hideShow", id);
         showsActions.hideShowAction(shows, id)
         this.setState({
             loadingShows: true

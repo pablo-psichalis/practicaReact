@@ -1,8 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import * as showsActions from '../../actions/showsActions'
-
 const Show = props => {
 
     return (
@@ -14,7 +12,7 @@ const Show = props => {
                 <header className="w-100 pt-3 px-3">
                     <Link className="d-block" to={`/shows/${props.show.id}`}>{props.show.name}</Link>
                 </header>
-                <button class="btn btn-danger" onClick={() => props.hideShows(props.show.id)}>Hide</button>
+                <button className="btn btn-info" onClick={() => props.hideShows(props.show.id)}>Hide</button>
                 <p>{props.show.overview}</p>
             </div>
         </article>

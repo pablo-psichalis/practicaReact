@@ -6,16 +6,16 @@ import * as movieActions from '../../actions/movieActions'
 
 class Movie extends React.Component {
     constructor(props) {
-        super(props) 
+        super(props)
 
         this.state = {
-            movie: {},
+            movie: {recommendations:[]},
             recommendations: [],
             similar: [],
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         const { movieActions, match } = this.props;
 
         movieActions.loadMovie(match.params.id);
@@ -30,18 +30,18 @@ class Movie extends React.Component {
     }
 
     render() {
-        const { movie } = this.state
-
+        const { movie, recommendations } = this.state
+        console.log("MOVIE:", movie)
         return (
-            <section className="container main movie" style={{backgroundImage: movie.id ? `url(https://image.tmdb.org/t/p/w342/${movie.backdrop_path})` : ''}}>
+            <section className="container main movie" style={{ backgroundImage: movie.id ? `url(https://image.tmdb.org/t/p/w342/${movie.backdrop_path})` : '' }}>
                 <div className="overlay"></div>
                 <header className="row">
                     <div className="col-12">
-                        <h1 style={{color: 'white'}}>{movie.id ? movie.title : 'Loading...'}</h1>
+                        <h1 style={{ color: 'white' }}>{movie.id ? movie.title : 'Loading...'}</h1>
                     </div>
                 </header>
                 <article className="row movie-item">
-                    <footer className="col-md-4 offset-md-1 my-4 movie-poster" style={{backgroundImage: `url(https://image.tmdb.org/t/p/w342/${movie.poster_path})`}}>
+                    <footer className="col-md-4 offset-md-1 my-4 movie-poster" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w342/${movie.poster_path})` }}>
 
                     </footer>
                     <div className="col-md-6 my-4">
@@ -52,8 +52,15 @@ class Movie extends React.Component {
                     </div>
                 </article>
                 <article className="row similar-item">
-                    <div className="similares">
-                        Pelis similares:
+                    <div className="row movie-list-wrapper">
+                        {movie.recommendations.map((movie, i) => {
+                            return (
+                                <Movie
+                                    key={i}
+                                    {...movie}
+                                />
+                            )
+                        })}
                     </div>
                 </article>
 
@@ -62,14 +69,14 @@ class Movie extends React.Component {
     }
 }
 
-function mapStateToProps(state, ownProps){
+function mapStateToProps(state, ownProps) {
     return {
         movie: state.movie,
-        recommendations: state.recommendations,
+        recommendations: state.movie.recommendations,
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return {
         movieActions: bindActionCreators(movieActions, dispatch),
     }

@@ -36,12 +36,14 @@ class Show extends React.Component {
                 </header>
                 <article className="row show-item">
                     <footer className="col-md-4 offset-md-1 my-4 show-poster" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w342/${show.poster_path})` }}>
-
                     </footer>
                     <div className="col-md-6 my-4">
                         <header className="w-100">
                             <h1>{show.original_name}</h1>
                         </header>
+                        <button className="btn btn-primary">Show recommended</button>
+                        <button className="btn btn-primary">Show similar</button>
+                        <button className="btn btn-primary">Add comment</button>
                         <p className="d-block">{show.overview}</p>
                     </div>
                 </article>
